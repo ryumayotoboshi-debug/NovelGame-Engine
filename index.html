@@ -8,7 +8,6 @@
 
 <style>
 
-/* ===== 基本 ===== */
 body{
 margin:0;
 background:black;
@@ -17,28 +16,25 @@ font-family:monospace;
 overflow:hidden;
 }
 
-/* ===== UI ===== */
+/* UI */
 #ui{
 display:flex;
 flex-direction:column;
 height:100vh;
 }
 
-/* ステータス */
 #status{
 padding:5px 10px;
 border-bottom:1px solid #00ffcc;
 font-size:12px;
 }
 
-/* ログ */
 #log{
 flex:1;
 overflow-y:auto;
 padding:10px;
 }
 
-/* コマンド */
 #command{
 border-top:1px solid #00ffcc;
 padding:10px;
@@ -54,7 +50,7 @@ text-align:left;
 font-size:14px;
 }
 
-/* ===== グリッチ ===== */
+/* グリッチ */
 .glitch{
 animation: glitch 0.15s infinite;
 }
@@ -73,197 +69,13 @@ animation: glitch 0.15s infinite;
 <body>
 
 <div id="ui">
-
-<div id="status">[ --:--:-- ] CONNECTING...</div>
-
-<div id="log"></div>
-
-<div id="command"></div>
-
+  <div id="status">[ --:--:-- ] CONNECTING...</div>
+  <div id="log"></div>
+  <div id="command"></div>
 </div>
 
-<script>
-
-/* ===== 要素取得 ===== */
-const log = document.getElementById("log")
-const command = document.getElementById("command")
-const status = document.getElementById("status")
-
-/* ===== 時刻更新 ===== */
-function updateTime(){
-const now = new Date()
-const t = now.toTimeString().split(" ")[0]
-status.innerText = `[ ${t} ] CONNECTED`
-}
-setInterval(updateTime,1000)
-
-/* ===== ログ追加 ===== */
-function addLog(text){
-
-const line = document.createElement("div")
-line.innerText = "> " + text
-
-log.appendChild(line)
-log.scrollTop = log.scrollHeight
-
-}
-
-/* ===== グリッチ ===== */
-function glitch(){
-
-document.body.classList.add("glitch")
-
-setTimeout(()=>{
-document.body.classList.remove("glitch")
-},200)
-
-}
-
-/* ===== テキスト破壊 ===== */
-function corrupt(text){
-
-return text.split("").map(c=>{
-return Math.random()<0.2 ? "#" : c
-}).join("")
-
-}
-
-/* ===== コマンド表示 ===== */
-function showCommands(list){
-
-command.innerHTML=""
-
-list.forEach(c=>{
-
-const btn = document.createElement("button")
-btn.className="cmd"
-btn.innerText = "[ " + c.text + " ]"
-
-btn.onclick = c.action
-
-command.appendChild(btn)
-
-})
-
-}
-
-/* ===== シナリオ制御 ===== */
-
-function start(){
-
-addLog("BOOT SEQUENCE INIT")
-
-setTimeout(()=>{
-addLog("LOADING MODULES")
-},800)
-
-setTimeout(()=>{
-addLog("SYSTEM ONLINE")
-},1600)
-
-setTimeout(()=>{
-addLog("SIGNAL DETECTED")
-glitch()
-},2400)
-
-setTimeout(()=>{
-addLog("SOURCE: UNKNOWN")
-},3000)
-
-setTimeout(()=>{
-showCommands([
-{ text:"SCAN", action:scan },
-{ text:"IGNORE", action:ignore }
-])
-},3500)
-
-}
-
-/* ===== 分岐 ===== */
-
-function scan(){
-
-command.innerHTML=""
-
-addLog("SCANNING...")
-
-setTimeout(()=>{
-addLog(corrupt("SIGNAL STRENGTH: LOW"))
-glitch()
-},1000)
-
-setTimeout(()=>{
-addLog("ANOMALY DETECTED")
-},2000)
-
-setTimeout(()=>{
-showCommands([
-{ text:"ANALYZE", action:analyze },
-{ text:"DISCONNECT", action:disconnect }
-])
-},2500)
-
-}
-
-function ignore(){
-
-command.innerHTML=""
-
-addLog("IGNORING SIGNAL")
-
-setTimeout(()=>{
-addLog("SYSTEM STABLE")
-},1000)
-
-setTimeout(()=>{
-addLog("...")
-},2000)
-
-setTimeout(()=>{
-addLog("SIGNAL LOST")
-},3000)
-
-}
-
-/* ===== さらに分岐 ===== */
-
-function analyze(){
-
-command.innerHTML=""
-
-addLog("ANALYZING DATA")
-
-setTimeout(()=>{
-addLog(corrupt("DATA CORRUPTED"))
-glitch()
-},1000)
-
-setTimeout(()=>{
-addLog("RECONSTRUCTING...")
-},2000)
-
-setTimeout(()=>{
-addLog("UNKNOWN ENTITY DETECTED")
-},3000)
-
-}
-
-function disconnect(){
-
-command.innerHTML=""
-
-addLog("DISCONNECTING")
-
-setTimeout(()=>{
-addLog("CONNECTION CLOSED")
-},1000)
-
-}
-
-/* ===== 開始 ===== */
-start()
-
-</script>
+<script src="scenario.js"></script>
+<script src="engine.js"></script>
 
 </body>
 </html>
