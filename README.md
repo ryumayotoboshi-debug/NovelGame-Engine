@@ -1,1 +1,2 @@
 # NovelGame-Engine
+ノベルゲームエンジン
