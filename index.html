@@ -4,67 +4,94 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Novel Engine</title>
+<title>Abstract Novel UI</title>
 
 <style>
 
 body{
 margin:0;
 background:black;
-color:white;
-font-family:sans-serif;
+color:#ddd;
+font-family:monospace;
 overflow:hidden;
+transition:background 1s;
 }
 
+/* 全体 */
 #game{
 position:relative;
 width:100vw;
 height:100vh;
 }
 
-#bg{
+/* 背景ノイズ */
+#noise{
 position:absolute;
 width:100%;
 height:100%;
-object-fit:cover;
+opacity:0.05;
+background:url("noise.png");
 }
 
+/* 記号（キャラ） */
+#symbol{
+position:absolute;
+top:40%;
+width:100%;
+text-align:center;
+font-size:40px;
+opacity:0;
+transition:opacity 1s;
+}
+
+/* テキスト */
 #textBox{
 position:absolute;
 bottom:0;
 width:100%;
-height:30%;
-background:rgba(0,0,0,0.6);
 padding:20px;
 box-sizing:border-box;
+background:rgba(0,0,0,0.6);
 }
 
 #text{
-font-size:18px;
-line-height:1.6;
+white-space:pre-line;
+line-height:1.8;
+letter-spacing:1px;
 }
 
-#choices{
-margin-top:10px;
-}
-
+/* 選択肢 */
 .choice{
 display:block;
-margin-top:5px;
-padding:8px;
-background:#222;
+margin-top:10px;
+padding:10px;
+background:#111;
 border:none;
-color:white;
+color:#ddd;
 width:100%;
 text-align:left;
 }
 
-#next{
+/* ログ */
+#log{
 position:absolute;
-right:20px;
-bottom:20px;
-font-size:14px;
+top:10px;
+left:10px;
+font-size:12px;
+color:#0f0;
 opacity:0.7;
+}
+
+/* グリッチ */
+.glitch{
+animation:glitch 0.2s infinite;
+}
+
+@keyframes glitch{
+0%{transform:translate(0)}
+25%{transform:translate(-2px,2px)}
+50%{transform:translate(2px,-2px)}
+100%{transform:translate(0)}
 }
 
 </style>
@@ -74,17 +101,17 @@ opacity:0.7;
 
 <div id="game">
 
-<img id="bg" src="">
+<div id="noise"></div>
+
+<div id="symbol">●</div>
+
+<div id="log"></div>
 
 <div id="textBox">
-
 <div id="text"></div>
-
 <div id="choices"></div>
-
-<div id="next">▶ tap</div>
-
 </div>
+
 </div>
 
 <script src="scenario.js"></script>
