@@ -1,47 +1,56 @@
-const scenario = [
+const scenario = {
 
-{
-text:"……"
+start:{
+  logs:[
+    { text:"BOOT SEQUENCE INIT" },
+    { text:"LOADING MODULES", delay:800 },
+    { text:"SYSTEM ONLINE", delay:1600 },
+    { text:"SIGNAL DETECTED", glitch:true, delay:2400 },
+    { text:"SOURCE: UNKNOWN", delay:3000 }
+  ],
+  commands:[
+    { text:"SCAN", next:"scan" },
+    { text:"IGNORE", next:"ignore" }
+  ],
+  commandsDelay:3500
 },
 
-{
-symbol:"●",
-text:"存在を検出"
+scan:{
+  logs:[
+    { text:"SCANNING..." },
+    { text:"SIGNAL STRENGTH: LOW", corrupt:true, glitch:true, delay:1000 },
+    { text:"ANOMALY DETECTED", delay:2000 }
+  ],
+  commands:[
+    { text:"ANALYZE", next:"analyze" },
+    { text:"DISCONNECT", next:"disconnect" }
+  ],
+  commandsDelay:2500
 },
 
-{
-log:"SIGNAL DETECTED",
-text:"微弱な信号がある"
+ignore:{
+  logs:[
+    { text:"IGNORING SIGNAL" },
+    { text:"SYSTEM STABLE", delay:1000 },
+    { text:"...", delay:2000 },
+    { text:"SIGNAL LOST", delay:3000 }
+  ]
 },
 
-{
-color:"#001122",
-text:"少し空気が変わった"
+analyze:{
+  logs:[
+    { text:"ANALYZING DATA" },
+    { text:"DATA CORRUPTED", corrupt:true, glitch:true, delay:1000 },
+    { text:"RECONSTRUCTING...", delay:2000 },
+    { text:"UNKNOWN ENTITY DETECTED", delay:3000 }
+  ]
 },
 
-{
-glitch:true,
-text:"……ノイズ"
-},
-
-{
-choice:[
-{ text:"観測する", next:6 },
-{ text:"無視する", next:8 }
-]
-},
-
-{
-text:"あなたは観測を続けた",
-next:7
-},
-
-{
-text:"何も起こらない",
-},
-
-{
-text:"あなたは目を逸らした"
+disconnect:{
+  logs:[
+    { text:"DISCONNECTING" },
+    { text:"CONNECTION CLOSED", delay:1000 }
+  ]
 }
 
-]
+}
