@@ -1,116 +1,87 @@
-let index = 0
-
-const text = document.getElementById("text")
-const choices = document.getElementById("choices")
-const symbol = document.getElementById("symbol")
+/* ===== 要素取得 ===== */
 const log = document.getElementById("log")
+const command = document.getElementById("command")
+const status = document.getElementById("status")
 
-function showScene(){
+let current = "start"
 
-const scene = scenario[index]
+/* ===== 時刻 ===== */
+function updateTime(){
+  const now = new Date()
+  const t = now.toTimeString().split(" ")[0]
+  status.innerText = `[ ${t} ] CONNECTED`
+}
+setInterval(updateTime,1000)
 
-choices.innerHTML=""
-
-/* テキスト */
-if(scene.text){
-typeText(scene.text)
-}else{
-text.innerText=""
+/* ===== ログ ===== */
+function addLog(text){
+  const line = document.createElement("div")
+  line.innerText = "> " + text
+  log.appendChild(line)
+  log.scrollTop = log.scrollHeight
 }
 
-/* 記号 */
-if(scene.symbol){
-symbol.innerText = scene.symbol
-symbol.style.opacity = 1
-}else{
-symbol.style.opacity = 0
+/* ===== グリッチ ===== */
+function glitch(){
+  document.body.classList.add("glitch")
+  setTimeout(()=>document.body.classList.remove("glitch"),200)
 }
 
-/* 色 */
-if(scene.color){
-document.body.style.background = scene.color
+/* ===== テキスト破壊 ===== */
+function corrupt(text){
+  return text.split("").map(c=>{
+    return Math.random()<0.2 ? "#" : c
+  }).join("")
 }
 
-/* ログ */
-if(scene.log){
-addLog(scene.log)
+/* ===== コマンド ===== */
+function showCommands(list){
+  command.innerHTML=""
+
+  list.forEach(c=>{
+    const btn = document.createElement("button")
+    btn.className="cmd"
+    btn.innerText = "[ " + c.text + " ]"
+
+    btn.onclick = ()=>{
+      current = c.next
+      runScene()
+    }
+
+    command.appendChild(btn)
+  })
 }
 
-/* グリッチ */
-if(scene.glitch){
-document.body.classList.add("glitch")
-setTimeout(()=>document.body.classList.remove("glitch"),300)
-}
+/* ===== シーン実行 ===== */
+function runScene(){
 
-/* 選択肢 */
-if(scene.choice){
+  const scene = scenario[current]
+  command.innerHTML=""
 
-scene.choice.forEach(c=>{
-const btn = document.createElement("button")
-btn.className="choice"
-btn.innerText = c.text
+  if(!scene) return
 
-btn.onclick=()=>{
-index = c.next
-showScene()
-}
+  scene.logs.forEach((entry, i)=>{
+    setTimeout(()=>{
+      if(entry.corrupt){
+        addLog(corrupt(entry.text))
+      }else{
+        addLog(entry.text)
+      }
 
-choices.appendChild(btn)
-})
+      if(entry.glitch){
+        glitch()
+      }
 
-}
+    }, entry.delay || i*800)
+  })
 
-}
-
-/* 文字送り */
-function typeText(str){
-
-text.innerText=""
-let i=0
-
-let interval = setInterval(()=>{
-text.innerText += str[i]
-i++
-if(i>=str.length) clearInterval(interval)
-},30)
-
-}
-
-/* ログ追加 */
-function addLog(msg){
-log.innerText += "\n> " + msg
-}
-
-/* クリックで進行 */
-document.body.onclick = function(){
-
-const scene = scenario[index]
-
-if(scene.choice) return
-
-if(scene.wait){
-setTimeout(()=>{
-nextScene()
-},scene.wait)
-return
-}
-
-nextScene()
+  if(scene.commands){
+    setTimeout(()=>{
+      showCommands(scene.commands)
+    }, scene.commandsDelay || 2000)
+  }
 
 }
 
-function nextScene(){
-
-if(scenario[index].next !== undefined){
-index = scenario[index].next
-}else{
-index++
-}
-
-if(index >= scenario.length) return
-
-showScene()
-
-}
-
-showScene()
+/* ===== 開始 ===== */
+runScene()
