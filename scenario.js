@@ -1,41 +1,47 @@
 const scenario = [
 
 {
-bg:"bg1.jpg",
-text:"夜だった。"
+text:"……"
 },
 
 {
-text:"街灯が一つだけ光っている。"
+symbol:"●",
+text:"存在を検出"
 },
 
 {
-text:"足を止めた。"
+log:"SIGNAL DETECTED",
+text:"微弱な信号がある"
+},
+
+{
+color:"#001122",
+text:"少し空気が変わった"
+},
+
+{
+glitch:true,
+text:"……ノイズ"
 },
 
 {
 choice:[
-{ text:"歩き続ける", next:4 },
-{ text:"立ち止まる", next:6 }
+{ text:"観測する", next:6 },
+{ text:"無視する", next:8 }
 ]
 },
 
 {
-text:"あなたは歩き続けた。",
-bg:"bg2.jpg"
-},
-
-{
-text:"遠くで犬が鳴いた。",
+text:"あなたは観測を続けた",
 next:7
 },
 
 {
-text:"あなたはしばらく立っていた。"
+text:"何も起こらない",
 },
 
 {
-text:"静かな夜だ。",
+text:"あなたは目を逸らした"
 }
 
 ]
