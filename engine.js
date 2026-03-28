@@ -1,11 +1,10 @@
-/* ===== 要素取得 ===== */
 const log = document.getElementById("log")
 const command = document.getElementById("command")
 const status = document.getElementById("status")
 
 let current = "start"
 
-/* ===== 時刻 ===== */
+/* 時刻 */
 function updateTime(){
   const now = new Date()
   const t = now.toTimeString().split(" ")[0]
@@ -13,7 +12,7 @@ function updateTime(){
 }
 setInterval(updateTime,1000)
 
-/* ===== ログ ===== */
+/* ログ */
 function addLog(text){
   const line = document.createElement("div")
   line.innerText = "> " + text
@@ -21,23 +20,22 @@ function addLog(text){
   log.scrollTop = log.scrollHeight
 }
 
-/* ===== グリッチ ===== */
+/* グリッチ */
 function glitch(){
   document.body.classList.add("glitch")
   setTimeout(()=>document.body.classList.remove("glitch"),200)
 }
 
-/* ===== テキスト破壊 ===== */
+/* 文字破壊 */
 function corrupt(text){
   return text.split("").map(c=>{
     return Math.random()<0.2 ? "#" : c
   }).join("")
 }
 
-/* ===== コマンド ===== */
+/* コマンド */
 function showCommands(list){
   command.innerHTML=""
-
   list.forEach(c=>{
     const btn = document.createElement("button")
     btn.className="cmd"
@@ -52,21 +50,23 @@ function showCommands(list){
   })
 }
 
-/* ===== シーン実行 ===== */
+/* シーン */
 function runScene(){
 
-  const scene = scenario[current]
+  const scene = system[current]
   command.innerHTML=""
 
   if(!scene) return
 
   scene.logs.forEach((entry, i)=>{
     setTimeout(()=>{
+      let text = entry.text
+
       if(entry.corrupt){
-        addLog(corrupt(entry.text))
-      }else{
-        addLog(entry.text)
+        text = corrupt(text)
       }
+
+      addLog(text)
 
       if(entry.glitch){
         glitch()
@@ -83,5 +83,5 @@ function runScene(){
 
 }
 
-/* ===== 開始 ===== */
+/* 開始 */
 runScene()
