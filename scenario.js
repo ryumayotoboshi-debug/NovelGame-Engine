@@ -1,4 +1,4 @@
-const scenario = {
+const system = {
 
 start:{
   logs:[
@@ -16,11 +16,7 @@ start:{
 },
 
 scan:{
-  logs:[
-    { text:"SCANNING..." },
-    { text:"SIGNAL STRENGTH: LOW", corrupt:true, glitch:true, delay:1000 },
-    { text:"ANOMALY DETECTED", delay:2000 }
-  ],
+  logs: log01, // ← 外部ログ読み込み
   commands:[
     { text:"ANALYZE", next:"analyze" },
     { text:"DISCONNECT", next:"disconnect" }
