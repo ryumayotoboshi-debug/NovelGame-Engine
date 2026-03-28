@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Cyberpunk ADV</title>
 
 <style>
-
 body{
 margin:0;
 background:black;
@@ -16,7 +14,6 @@ font-family:monospace;
 overflow:hidden;
 }
 
-/* UI */
 #ui{
 display:flex;
 flex-direction:column;
@@ -50,7 +47,6 @@ text-align:left;
 font-size:14px;
 }
 
-/* グリッチ */
 .glitch{
 animation: glitch 0.15s infinite;
 }
@@ -62,7 +58,6 @@ animation: glitch 0.15s infinite;
 60%{transform:translate(-1px,1px)}
 100%{transform:translate(0)}
 }
-
 </style>
 </head>
 
@@ -74,7 +69,9 @@ animation: glitch 0.15s infinite;
   <div id="command"></div>
 </div>
 
-<script src="scenario.js"></script>
+<!-- 順番が重要 -->
+<script src="log01.js"></script>
+<script src="system.js"></script>
 <script src="engine.js"></script>
 
 </body>
